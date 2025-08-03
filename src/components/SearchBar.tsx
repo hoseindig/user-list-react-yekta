@@ -14,14 +14,16 @@ export default function SearchBar({ onSearch }: SearchBarProps) {
     <TextField
       fullWidth
       label="جستجو بر اساس نام یا ایمیل"
-      variant="outlined"
+      variant="filled"
       onChange={handleChange}
       sx={{ px: 0, mx: 0 }}
       InputLabelProps={{
+        shrink: true,
         sx: {
           right: 30,
           left: "auto",
           direction: "rtl",
+          transformOrigin: "top right",
         },
       }}
       inputProps={{
