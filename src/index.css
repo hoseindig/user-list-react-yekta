@@ -1,6 +1,25 @@
-body{
-  direction: rtl;
+@font-face {
+  font-family: "myFont";
+  font-style: normal;
+  font-weight: normal;
+  src: url("/fonts/ats-font/eot/ats-font.eot");
+  src: url("/fonts/ats-font/eot/ats-font.eot?#iefix")
+      format("embedded-opentype"),
+    /* IE6-8 */ url("/fonts/ats-font/woff2/ats-font.woff2")
+      format("woff2"),
+    /* FF39+,Chrome36+, Opera24+*/
+      url("/fonts/ats-font/woff/ats-font.woff") format("woff"),
+    /* FF3.6+, IE9, Chrome6+, Saf5.1+*/
+      url("/fonts/ats-font/ttf/ats-font.ttf") format("truetype");
 }
+
+ 
+* {
+  font-family: "myFont"!important;
+}
+
+ 
+
 
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
