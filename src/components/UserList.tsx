@@ -89,8 +89,8 @@ export default function UserList({ onViewDetails }: UserListProps) {
         width: "100%",
         py: 4,
         px: 2,
-        border: "1px solid green",
-        borderRadius: 1,
+        // border: "1px solid green",
+        // borderRadius: 1,
         boxSizing: "border-box",
       }}
     >
@@ -100,7 +100,7 @@ export default function UserList({ onViewDetails }: UserListProps) {
           // width: "100%",
           // px: { xs: 1, sm: 2 },
           py: 2,
-          border: "1px solid red",
+          // border: "1px solid red",
           borderRadius: 1,
         }}
       >

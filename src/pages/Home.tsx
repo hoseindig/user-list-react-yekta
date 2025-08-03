@@ -1,4 +1,4 @@
-import { Box, Typography, Container } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import UserList from "@/components/UserList.js";
 import { useNavigate } from "react-router-dom";
 
@@ -9,9 +9,8 @@ export default function Home() {
     <Box
       sx={{
         mt: 4,
-        // px: 2,
-        border: "1px solid blue",
-        borderRadius: 1,
+        // border: "1px solid blue",
+        // borderRadius: 1,
       }}
     >
       <Typography variant="h4" gutterBottom align="center">

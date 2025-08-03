@@ -6,6 +6,9 @@ import {
   Button,
   Box,
   Avatar,
+  Divider,
+  Stack,
+  alpha,
 } from "@mui/material";
 import { User } from "../types";
 import { Email, Phone, LocationCity } from "@mui/icons-material";
@@ -19,79 +22,100 @@ export default function UserCard({ user, onViewDetails }: UserCardProps) {
   return (
     <Card
       sx={{
-        mb: 1.5, // کاهش فاصله پایین کارت
-        p: 1.5, // کاهش پدینگ داخلی
-        borderRadius: 1.5, // گوشه‌های نرم‌تر
-        boxShadow: 2, // سایه سبک‌تر
-        display: "flex",
-        flexDirection: { xs: "column", sm: "row" },
-        alignItems: { xs: "center", sm: "flex-start" },
+        maxWidth: 320,
+        borderRadius: 3,
+        boxShadow: 3,
+        overflow: "hidden",
         bgcolor: "background.paper",
         transition: "transform 0.2s, box-shadow 0.2s",
         "&:hover": {
-          transform: "scale(1.01)", // افکت هاور ملایم‌تر
-          boxShadow: 4,
+          transform: "scale(1.03)",
+          boxShadow: 6,
+          cursor: "pointer", // اضافه شد
         },
-        maxWidth: 320, // محدود کردن عرض کارت
+        display: "flex",
+        flexDirection: "column",
       }}
     >
-      <Avatar
+      {/* هدر رنگی */}
+      <Box
         sx={{
-          width: { xs: 48, sm: 56 }, // کاهش اندازه آواتار
-          height: { xs: 48, sm: 56 },
-          mr: { sm: 1.5 },
-          mb: { xs: 1.5, sm: 0 },
-          bgcolor: "primary.main",
-          fontSize: "1.2rem", // کاهش اندازه فونت آواتار
+          bgcolor: "primary.light",
+          color: "white",
+          py: 3,
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          gap: 1,
         }}
       >
-        {user.name.charAt(0).toUpperCase()}
-      </Avatar>
-      <Box sx={{ flex: 1 }}>
-        <CardContent sx={{ p: 1 }}>
-          {" "}
-          {/* کاهش پدینگ محتوا */}
-          <Typography variant="subtitle1" fontWeight="bold" gutterBottom>
-            {user.name}
-          </Typography>
-          <Box display="flex" alignItems="center" mb={0.5}>
-            <Email sx={{ mr: 0.5, color: "text.secondary", fontSize: 16 }} />
-            <Typography variant="caption" color="text.secondary">
-              ایمیل: {user.email}
-            </Typography>
-          </Box>
-          <Box display="flex" alignItems="center" mb={0.5}>
-            <Phone sx={{ mr: 0.5, color: "text.secondary", fontSize: 16 }} />
-            <Typography variant="caption" color="text.secondary">
-              تلفن: {user.phone}
-            </Typography>
-          </Box>
-          <Box display="flex" alignItems="center">
-            <LocationCity
-              sx={{ mr: 0.5, color: "text.secondary", fontSize: 16 }}
-            />
-            <Typography variant="caption" color="text.secondary">
-              شهر: {user.address.city}
-            </Typography>
-          </Box>
-        </CardContent>
-        <CardActions>
-          <Button
-            variant="contained"
-            color="primary"
-            size="small"
-            onClick={() => onViewDetails(user.id)}
-            sx={{
-              mx: "auto",
-              mt: { xs: 1, sm: 0 },
-              fontSize: "0.75rem",
-              px: 2,
-            }}
-          >
-            مشاهده جزئیات
-          </Button>
-        </CardActions>
+        <Avatar
+          sx={{
+            bgcolor: "white",
+            color: "primary.main",
+            width: 72,
+            height: 72,
+            fontSize: "2rem",
+          }}
+        >
+          {user.name.charAt(0).toUpperCase()}
+        </Avatar>
+        <Typography variant="h6" fontWeight="bold">
+          {user.name}
+        </Typography>
       </Box>
+
+      <CardContent>
+        <Stack spacing={1.5}>
+          <InfoRow icon={<Email />} label="ایمیل" value={user.email} />
+          <Divider />
+          <InfoRow icon={<Phone />} label="تلفن" value={user.phone} />
+          <Divider />
+          <InfoRow
+            icon={<LocationCity />}
+            label="شهر"
+            value={user.address.city}
+          />
+        </Stack>
+      </CardContent>
+
+      <CardActions
+        sx={{
+          justifyContent: "center",
+          pb: 2,
+        }}
+      >
+        <Button
+          variant="contained"
+          size="small"
+          onClick={() => onViewDetails(user.id)}
+          sx={{ px: 3, fontSize: "0.875rem" }}
+        >
+          مشاهده جزئیات
+        </Button>
+      </CardActions>
     </Card>
+  );
+}
+
+function InfoRow({
+  icon,
+  label,
+  value,
+}: {
+  icon: React.ReactNode;
+  label: string;
+  value: string;
+}) {
+  return (
+    <Box display="flex" alignItems="center" gap={1}>
+      {icon}
+      <Typography variant="body2" color="text.secondary" sx={{ minWidth: 50 }}>
+        {label}:
+      </Typography>
+      <Typography variant="body1" fontWeight="medium" dir="ltr" flex={1}>
+        {value}
+      </Typography>
+    </Box>
   );
 }

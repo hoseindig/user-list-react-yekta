@@ -1,9 +1,20 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import AxiosInstance from "../api/AxiosInstance";
 import { User } from "../types";
-import { Box, Typography, CircularProgress, Button } from "@mui/material";
-import { useNavigate } from "react-router-dom";
+import {
+  Box,
+  Typography,
+  CircularProgress,
+  Button,
+  Card,
+  CardContent,
+  Avatar,
+  Divider,
+  Stack,
+  Paper,
+} from "@mui/material";
+import PersonIcon from "@mui/icons-material/Person";
 
 export default function UserDetails() {
   const { id } = useParams<{ id: string }>();
@@ -25,29 +36,86 @@ export default function UserDetails() {
 
   if (loading) {
     return (
-      <Box display="flex" justifyContent="center" mt={4}>
+      <Box display="flex" justifyContent="center" mt={8}>
         <CircularProgress />
       </Box>
     );
   }
 
   if (!user) {
-    return <Typography>کاربر یافت نشد</Typography>;
+    return (
+      <Typography textAlign="center" color="error" mt={6}>
+        کاربر یافت نشد
+      </Typography>
+    );
   }
 
   return (
-    <Box>
-      <Typography variant="h4" gutterBottom>
-        جزئیات کاربر
-      </Typography>
-      <Typography>نام: {user.name}</Typography>
-      <Typography>نام کاربری: {user.username}</Typography>
-      <Typography>ایمیل: {user.email}</Typography>
-      <Typography>تلفن: {user.phone}</Typography>
-      <Typography>شهر: {user.address.city}</Typography>
-      <Button variant="contained" onClick={() => navigate("/")} sx={{ mt: 2 }}>
-        بازگشت
-      </Button>
+    <Box maxWidth="sm" mx="auto" mt={6}>
+      <Card
+        elevation={3}
+        sx={{
+          borderRadius: 3,
+          overflow: "hidden",
+          bgcolor: "#fefefe",
+        }}
+      >
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            bgcolor: "primary.main",
+            color: "white",
+            py: 4,
+          }}
+        >
+          <Avatar
+            sx={{
+              bgcolor: "white",
+              color: "primary.main",
+              width: 80,
+              height: 80,
+            }}
+          >
+            <PersonIcon sx={{ fontSize: 40 }} />
+          </Avatar>
+          <Typography variant="h6" mt={2}>
+            {user.name}
+          </Typography>
+          <Typography variant="body2" sx={{ opacity: 0.8 }}>
+            @{user.username}
+          </Typography>
+        </Box>
+
+        <CardContent>
+          <Stack spacing={2}>
+            <InfoRow label="ایمیل" value={user.email} />
+            <Divider />
+            <InfoRow label="تلفن" value={user.phone} />
+            <Divider />
+            <InfoRow label="شهر" value={user.address.city} />
+          </Stack>
+        </CardContent>
+
+        <Box textAlign="center" py={2}>
+          <Button variant="contained" onClick={() => navigate("/")}>
+            بازگشت به داشبورد
+          </Button>
+        </Box>
+      </Card>
     </Box>
+  );
+}
+
+// ✅ کامپوننت کمکی برای نمایش ردیف اطلاعات
+function InfoRow({ label, value }: { label: string; value: string }) {
+  return (
+    <Stack direction="row" justifyContent="space-between" alignItems="center">
+      <Typography color="text.secondary">{label}</Typography>
+      <Typography fontWeight="medium" textAlign="left" dir="ltr">
+        {value}
+      </Typography>
+    </Stack>
   );
 }
