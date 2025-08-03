@@ -148,6 +148,7 @@ export default function UserList({ onViewDetails }: UserListProps) {
                 lg={3}
                 key={user.id}
                 sx={{ display: "flex", justifyContent: "center" }}
+                onClick={() => handleViewDetails(user.id)}
               >
                 <Box sx={{ width: "100%", maxWidth: 320 }}>
                   <UserCard
@@ -179,7 +180,11 @@ export default function UserList({ onViewDetails }: UserListProps) {
               </TableHead>
               <TableBody>
                 {filteredUsers.map((user) => (
-                  <TableRow key={user.id} hover>
+                  <TableRow
+                    key={user.id}
+                    hover
+                    onClick={() => handleViewDetails(user.id)}
+                  >
                     <TableCell>{user.name}</TableCell>
                     <TableCell>{user.username}</TableCell>
                     <TableCell
