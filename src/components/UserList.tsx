@@ -31,7 +31,13 @@ export default function UserList({ onViewDetails }: UserListProps) {
   const [filteredUsers, setFilteredUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
-  const [viewMode, setViewMode] = useState<"card" | "table">("card"); // حالت نمایش
+
+  // مقدار اولیه viewMode با توجه به localStorage
+  const [viewMode, setViewMode] = useState<"card" | "table">(() => {
+    const savedMode = localStorage.getItem("userViewMode");
+    return savedMode === "table" ? "table" : "card";
+  });
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -70,7 +76,9 @@ export default function UserList({ onViewDetails }: UserListProps) {
   };
 
   const toggleViewMode = () => {
-    setViewMode(viewMode === "card" ? "table" : "card");
+    const newMode = viewMode === "card" ? "table" : "card";
+    setViewMode(newMode);
+    localStorage.setItem("userViewMode", newMode);
   };
 
   if (loading) {
@@ -89,18 +97,13 @@ export default function UserList({ onViewDetails }: UserListProps) {
         width: "100%",
         py: 4,
         px: 2,
-        // border: "1px solid green",
-        // borderRadius: 1,
         boxSizing: "border-box",
       }}
     >
       {/* SearchBar */}
       <Box
         sx={{
-          // width: "100%",
-          // px: { xs: 1, sm: 2 },
           py: 2,
-          // border: "1px solid red",
           borderRadius: 1,
         }}
       >
@@ -206,7 +209,10 @@ export default function UserList({ onViewDetails }: UserListProps) {
                       <Button
                         variant="contained"
                         size="small"
-                        onClick={() => handleViewDetails(user.id)}
+                        onClick={(e) => {
+                          e.stopPropagation(); // جلوگیری از اجرای onClick روی ردیف
+                          handleViewDetails(user.id);
+                        }}
                       >
                         جزئیات
                       </Button>
