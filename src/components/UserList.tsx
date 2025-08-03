@@ -1,11 +1,25 @@
 import { useEffect, useState } from "react";
-import AxiosInstance from "../api/AxiosInstance.js";
-import { User } from "../types.js";
-import UserCard from "./UserCard.js";
-import SearchBar from "./SearchBar.js";
-import UserDetailsModal from "./UserDetailsModal.js";
-import { CircularProgress, Box, Typography, Grid } from "@mui/material";
+import AxiosInstance from "../api/AxiosInstance";
+import { User } from "../types";
+import UserCard from "./UserCard";
+import SearchBar from "./SearchBar";
+import UserDetailsModal from "./UserDetailsModal";
+import {
+  CircularProgress,
+  Box,
+  Typography,
+  Grid,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow,
+  Button,
+  Paper,
+} from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import ViewListIcon from "@mui/icons-material/ViewList";
+import ViewModuleIcon from "@mui/icons-material/ViewModule";
 
 interface UserListProps {
   onViewDetails: (id: number) => void;
@@ -16,6 +30,7 @@ export default function UserList({ onViewDetails }: UserListProps) {
   const [filteredUsers, setFilteredUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
+  const [viewMode, setViewMode] = useState<"card" | "table">("card"); // حالت نمایش
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -46,10 +61,15 @@ export default function UserList({ onViewDetails }: UserListProps) {
     const user = users.find((u) => u.id === id);
     setSelectedUser(user || null);
     onViewDetails(id);
+    navigate(`/users/${id}`);
   };
 
   const handleCloseModal = () => {
     setSelectedUser(null);
+  };
+
+  const toggleViewMode = () => {
+    setViewMode(viewMode === "card" ? "table" : "card");
   };
 
   if (loading) {
@@ -62,37 +82,98 @@ export default function UserList({ onViewDetails }: UserListProps) {
 
   return (
     <Box sx={{ width: "100%", px: { xs: 1, sm: 2 }, py: 2 }}>
-      <SearchBar onSearch={handleSearch} />
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          mb: 2,
+        }}
+      >
+        <SearchBar onSearch={handleSearch} />
+        <Button
+          variant="outlined"
+          startIcon={
+            viewMode === "card" ? <ViewListIcon /> : <ViewModuleIcon />
+          }
+          onClick={toggleViewMode}
+          // sx={{ ml: 2 }}
+        >
+          {/* {viewMode === "card" ? "نمایش به‌صورت جدول" : "نمایش به‌صورت کارت"} */}
+        </Button>
+      </Box>
       {filteredUsers.length === 0 ? (
         <Typography textAlign="center" variant="h6" mt={4}>
           کاربری یافت نشد
         </Typography>
-      ) : (
-        <Grid container spacing={1.5} sx={{ justifyContent: "center" }}>
+      ) : viewMode === "card" ? (
+        <Grid container spacing={2} sx={{ justifyContent: "center" }}>
           {filteredUsers.map((user) => (
             <Grid
               item
               xs={12}
               sm={6}
               md={4}
-              lg={3} // اضافه کردن ستون بیشتر برای نمایش در دسکتاپ
+              lg={3}
               key={user.id}
               sx={{ display: "flex", justifyContent: "center" }}
             >
               <Box sx={{ width: "100%", maxWidth: 320 }}>
-                {" "}
-                {/* محدود کردن عرض کارت */}
                 <UserCard
                   user={user}
-                  onViewDetails={() => {
-                    handleViewDetails(user.id);
-                    navigate(`/users/${user.id}`);
-                  }}
+                  onViewDetails={() => handleViewDetails(user.id)}
                 />
               </Box>
             </Grid>
           ))}
         </Grid>
+      ) : (
+        <Paper sx={{ width: "100%", overflowX: "auto" }}>
+          <Table sx={{ minWidth: 650 }}>
+            <TableHead>
+              <TableRow>
+                <TableCell>نام</TableCell>
+                <TableCell>نام کاربری</TableCell>
+                <TableCell sx={{ display: { xs: "none", sm: "table-cell" } }}>
+                  ایمیل
+                </TableCell>
+                <TableCell sx={{ display: { xs: "none", md: "table-cell" } }}>
+                  تلفن
+                </TableCell>
+                <TableCell sx={{ display: { xs: "none", lg: "table-cell" } }}>
+                  شهر
+                </TableCell>
+                <TableCell>عملیات</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {filteredUsers.map((user) => (
+                <TableRow key={user.id} hover>
+                  <TableCell>{user.name}</TableCell>
+                  <TableCell>{user.username}</TableCell>
+                  <TableCell sx={{ display: { xs: "none", sm: "table-cell" } }}>
+                    {user.email}
+                  </TableCell>
+                  <TableCell sx={{ display: { xs: "none", md: "table-cell" } }}>
+                    {user.phone}
+                  </TableCell>
+                  <TableCell sx={{ display: { xs: "none", lg: "table-cell" } }}>
+                    {user.address.city}
+                  </TableCell>
+                  <TableCell>
+                    <Button
+                      variant="contained"
+                      size="small"
+                      onClick={() => handleViewDetails(user.id)}
+                    >
+                      جزئیات
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </Paper>
       )}
       {selectedUser && (
         <UserDetailsModal
