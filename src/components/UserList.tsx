@@ -97,8 +97,8 @@ export default function UserList({ onViewDetails }: UserListProps) {
       {/* SearchBar */}
       <Box
         sx={{
-          width: "100%",
-          px: { xs: 1, sm: 2 },
+          // width: "100%",
+          // px: { xs: 1, sm: 2 },
           py: 2,
           border: "1px solid red",
           borderRadius: 1,
