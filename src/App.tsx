@@ -1,16 +1,25 @@
 import { Routes, Route } from "react-router-dom";
-import { Container } from "@mui/material";
-import Home from "@/pages/Home"; // مسیر کوتاه با استفاده از alias
+import { Box } from "@mui/material";
+import Home from "@/pages/Home";
 import UserDetails from "@/pages/UserDetails";
 
 function App() {
   return (
-    <Container maxWidth="lg" sx={{ py: 4 }}>
+    <Box
+      sx={{
+        width: "100%",
+        minHeight: "100vh", // برای پر کردن کل ارتفاع صفحه
+        px: 2,
+        border: "1px solid green",
+        borderRadius: 1,
+        boxSizing: "border-box",
+      }}
+    >
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/users/:id" element={<UserDetails />} />
       </Routes>
-    </Container>
+    </Box>
   );
 }
 

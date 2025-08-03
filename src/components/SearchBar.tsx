@@ -17,6 +17,19 @@ export default function SearchBar({ onSearch }: SearchBarProps) {
       variant="outlined"
       onChange={handleChange}
       sx={{ mb: 3 }}
+      InputLabelProps={{
+        sx: {
+          right: 20,
+          left: "auto",
+          direction: "rtl",
+        },
+      }}
+      inputProps={{
+        style: {
+          textAlign: "right",
+          direction: "rtl",
+        },
+      }}
     />
   );
 }
