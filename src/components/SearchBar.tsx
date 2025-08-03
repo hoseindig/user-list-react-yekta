@@ -16,7 +16,7 @@ export default function SearchBar({ onSearch }: SearchBarProps) {
       label="جستجو بر اساس نام یا ایمیل"
       variant="outlined"
       onChange={handleChange}
-      sx={{ mb: 3 }}
+      sx={{}}
       InputLabelProps={{
         sx: {
           right: 20,

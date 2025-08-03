@@ -94,6 +94,7 @@ export default function UserList({ onViewDetails }: UserListProps) {
         boxSizing: "border-box",
       }}
     >
+      {/* SearchBar */}
       <Box
         sx={{
           width: "100%",
@@ -106,23 +107,32 @@ export default function UserList({ onViewDetails }: UserListProps) {
         <Box
           sx={{
             display: "flex",
-            justifyContent: "space-between",
             alignItems: "center",
+            gap: 2,
             mb: 2,
           }}
         >
-          <SearchBar onSearch={handleSearch} />
+          <Box sx={{ flex: 1 }}>
+            <SearchBar onSearch={handleSearch} />
+          </Box>
+
           <Button
             variant="outlined"
-            startIcon={
-              viewMode === "card" ? <ViewListIcon /> : <ViewModuleIcon />
-            }
             onClick={toggleViewMode}
-            // sx={{ ml: 2 }}
+            sx={{
+              minWidth: 50,
+              width: 50,
+              height: 56,
+              px: 0,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
           >
-            {/* {viewMode === "card" ? "نمایش به‌صورت جدول" : "نمایش به‌صورت کارت"} */}
+            {viewMode === "card" ? <ViewListIcon /> : <ViewModuleIcon />}
           </Button>
         </Box>
+
         {filteredUsers.length === 0 ? (
           <Typography textAlign="center" variant="h6" mt={4}>
             کاربری یافت نشد
